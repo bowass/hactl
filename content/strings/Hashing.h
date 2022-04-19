@@ -40,6 +40,7 @@ struct HashInterval {
 };
 
 vector<H> getHashes(string& str, int length) {
+	// returns all hashes of substrings with specified length
 	if (sz(str) < length) return {};
 	H h = 0, pw = 1;
 	rep(i,0,length)

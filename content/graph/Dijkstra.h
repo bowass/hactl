@@ -10,9 +10,6 @@
 
 #pragma once
 
-typedef vector<vector<pair<int, int>>> vvii;
-typedef vector<int> vi;
-
 void dijkstra(vvii& g, vi& d, int s, int inf) {
     set<ii> heap;
     d = vi(g.size(), inf);

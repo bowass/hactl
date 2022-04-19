@@ -26,7 +26,7 @@ struct AhoCorasick {
 	};
 	vector<Node> N;
 	vi backp;
-	void insert(string& s, int j) {
+	void insert(string& s, int j) { // private
 		assert(!s.empty());
 		int n = 0;
 		for (char c : s) {
@@ -60,7 +60,7 @@ struct AhoCorasick {
 			}
 		}
 	}
-	vi find(string word) {
+	vi find(string word) { // res[i] = length of longest pattern found that end in i (-1 if none)
 		int n = 0;
 		vi res; // ll count = 0;
 		for (char c : word) {
@@ -70,12 +70,13 @@ struct AhoCorasick {
 		}
 		return res;
 	}
-	vector<vi> findAll(vector<string>& pat, string word) {
+	vector<vi> findAll(vector<string>& pat, string word) { // res[i] = list of all pattern indexes that start in the i-th index of the word
 		vi r = find(word);
 		vector<vi> res(sz(word));
 		rep(i,0,sz(word)) {
 			int ind = r[i];
 			while (ind != -1) {
+				// found match at i - sz(pat[ind]) + 1 of pattern ind, changeable:
 				res[i - sz(pat[ind]) + 1].push_back(ind);
 				ind = backp[ind];
 			}

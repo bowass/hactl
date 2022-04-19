@@ -1,11 +1,9 @@
 /**
- * Author: Ludo Pulles, chilli, Simon Lindholm
+ * Author: Nir Adir
  * Date: 2019-01-09
  * License: CC0
- * Source: http://neerc.ifmo.ru/trains/toulouse/2017/fft2.pdf (do read, it's excellent)
-   Accuracy bound from http://www.daemonology.net/papers/fft.pdf
- * Description: fft(a) computes $\hat f(k) = \sum_x a[x] \exp(2\pi i \cdot k x / N)$ for all $k$. N must be a power of 2.
-   Useful for convolution:
+ * Description: dft(a) computes $\hat f(k) = \sum_x a[x] \exp(2\pi i \cdot k x /
+ N)$ for all $k$. N must be a power of 2. Useful for convolution:
    \texttt{conv(a, b) = c}, where $c[x] = \sum a[i]b[x-i]$.
    For convolution of complex numbers or more than two vectors: FFT, multiply
    pointwise, divide by n, reverse(start+1, end), FFT back.
@@ -14,45 +12,53 @@
    Otherwise, use NTT/FFTMod.
  * Time: O(N \log N) with $N = |A|+|B|$ ($\tilde 1s$ for $N=2^{22}$)
  * Status: somewhat tested
- * Details: An in-depth examination of precision for both FFT and FFTMod can be found
- * here (https://github.com/simonlindholm/fft-precision/blob/master/fft-precision.md)
+ * Details: An in-depth examination of precision for both FFT and FFTMod can be
+ found
+ * here
+ (https://github.com/simonlindholm/fft-precision/blob/master/fft-precision.md)
  */
 #pragma once
 
-typedef complex<double> C;
-typedef vector<double> vd;
-void fft(vector<C>& a) {
-	int n = sz(a), L = 31 - __builtin_clz(n);
-	static vector<complex<long double>> R(2, 1);
-	static vector<C> rt(2, 1);  // (^ 10% faster if double)
-	for (static int k = 2; k < n; k *= 2) {
-		R.resize(n); rt.resize(n);
-		auto x = polar(1.0L, acos(-1.0L) / k);
-		rep(i,k,2*k) rt[i] = R[i] = i&1 ? R[i/2] * x : R[i/2];
-	}
-	vi rev(n);
-	rep(i,0,n) rev[i] = (rev[i / 2] | (i & 1) << L) / 2;
-	rep(i,0,n) if (i < rev[i]) swap(a[i], a[rev[i]]);
-	for (int k = 1; k < n; k *= 2)
-		for (int i = 0; i < n; i += 2 * k) rep(j,0,k) {
-			// C z = rt[j+k] * a[i+j+k]; // (25% faster if hand-rolled)  /// include-line
-			auto x = (double *)&rt[j+k], y = (double *)&a[i+j+k];        /// exclude-line
-			C z(x[0]*y[0] - x[1]*y[1], x[0]*y[1] + x[1]*y[0]);           /// exclude-line
-			a[i + j + k] = a[i + j] - z;
-			a[i + j] += z;
-		}
+struct com {  // works also with c++ complex class but twice slower
+    double a, b;
+    com(double a = 0, double b = 0) : a(a), b(b) {}
+};
+com inline operator+(com l, com r) { return com(l.a + r.a, l.b + r.b); }
+com inline operator-(com l, com r) { return com(l.a - r.a, l.b - r.b); }
+com inline operator*(com l, com r) {
+    return com(l.a * r.a - l.b * r.b, l.b * r.a + l.a * r.b);
 }
-vd conv(const vd& a, const vd& b) {
-	if (a.empty() || b.empty()) return {};
-	vd res(sz(a) + sz(b) - 1);
-	int L = 32 - __builtin_clz(sz(res)), n = 1 << L;
-	vector<C> in(n), out(n);
-	copy(all(a), begin(in));
-	rep(i,0,sz(b)) in[i].imag(b[i]);
-	fft(in);
-	for (C& x : in) x *= x;
-	rep(i,0,n) out[i] = in[-i & (n - 1)] - conj(in[i]);
-	fft(out);
-	rep(i,0,sz(res)) res[i] = imag(out[i]) / (4 * n);
-	return res;
+com inline operator/(com c, double b) { return com(c.a / b, c.b / b); }
+
+void inline dft(vector<com> &a, int len, vi &rev, int tp = 1) {
+    const double pi = acos(-1);
+    for (int i = 0; i <= len; i++)
+        if (rev[i] > i) swap(a[i], a[rev[i]]);
+    for (int k = 1; k < len; k <<= 1) {
+        com w0(cos(2 * pi / (k << 1)), tp * sin(2 * pi / (k << 1)));
+        for (int l = 0; l < len; l += (k << 1)) {
+            com w(1);
+            for (int i = 0; i < k; ++i, w = w * w0) {
+                com p0 = a[l + i], p1 = w * a[l + k + i];
+                a[l + i] = p0 + p1, a[l + k + i] = p0 - p1;
+            }
+        }
+    }
+}
+vector<com> inline multiply(vector<com> &p, vector<com> &q) {  // modify p,q!!!
+    int len, k = 0;
+    for (len = 1; len <= p.size() + q.size(); len <<= 1, ++k)
+        ;
+    vector<com> res(len * 2, 0);
+    p.resize(2 * len, 0);
+    q.resize(2 * len, 0);
+    res.resize(2 * len, 0);
+    vi rev(len + 1, 0);
+    for (int i = 0; i <= len; i++)
+        rev[i] = (rev[i >> 1] >> 1) | ((i & 1) << (k - 1));
+    dft(p, len, rev), dft(q, len, rev);
+    for (int i = 0; i <= len; i++) res[i] = p[i] * q[i];
+    dft(res, len, rev, -1);
+    for (int i = 0; i <= len; i++) res[i] = res[i] / len;
+    return res;
 }

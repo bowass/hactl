@@ -34,25 +34,3 @@ Combinatorial search
 	Meet in the middle, Brute-force with pruning, Best-first (A*), Bidirectional search, Iterative deepening DFS / A*
 Data structures
 	LCA (2^k-jumps in trees in general), Pull/push-technique on trees, Heavy-light decomposition, Centroid decomposition, Lazy propagation, Self-balancing trees, Convex hull trick (wcipeg.com/wiki/Convex_hull_trick), Monotone queues / monotone stacks / sliding queues, Sliding queue using 2 stacks, Persistent segment tree
-
-Makefile:
-# Usage: make [run/test/...] [q=file]
-q := a # change this for default question file
-run: exe
-	@./exe
-exe: $q.cpp # with DEBUG define
-	@myg++ -Wno-unknown-pragmas -D DEBUG -o exe $q.cpp
-servexe: $q.cpp # without DEBUG define
-	@myg++ -Wno-unknown-pragmas -o servexe $q.cpp
-clean:
-	@rm exe servexe
-test: exe in # tests locally with DEBUG
-	@cat in | ./exe
-servtest: servexe in # tests like server
-	@cat in | ./exe
-
-CMakeLists.txt:
-add_definitions(-D_GLIBCXX_USE_CXX11_ABI=0)
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--stack,10000000")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Dlol -Wall -lm -O2 -Wno-unused-result")

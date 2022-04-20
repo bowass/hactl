@@ -1,0 +1,4 @@
+add_definitions(-D_GLIBCXX_USE_CXX11_ABI=0)
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--stack,10000000")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Dlol -Wall -lm -O2 -Wno-unused-result")

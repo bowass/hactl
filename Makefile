@@ -3,7 +3,7 @@ export TEXINPUTS=.:content/tex/:
 export max_print_line = 1048576
 
 help:
-	@echo "This makefile builds KACTL (Haifa's Algorithm Competition Template Library)"
+	@echo "This makefile builds HACTL (Haifa's Algorithm Competition Template Library)"
 	@echo ""
 	@echo "Available commands are:"
 	@echo "	make fast		- to build HACTL, quickly (only runs LaTeX once)"
@@ -18,15 +18,15 @@ help:
 	@echo "For more information see the file 'doc/README'"
 
 fast: | build
-	$(LATEXCMD) content/kactl.tex </dev/null
-	cp build/kactl.pdf hactl.pdf
+	$(LATEXCMD) content/hactl.tex </dev/null
+	cp build/hactl.pdf hactl.pdf
 
 hactl: test-session.pdf | build
-	$(LATEXCMD) content/kactl.tex && $(LATEXCMD) content/kactl.tex
-	cp build/kactl.pdf hactl.pdf
+	$(LATEXCMD) content/hactl.tex && $(LATEXCMD) content/hactl.tex
+	cp build/hactl.pdf hactl.pdf
 
 clean:
-	cd build && rm -f kactl.aux kactl.log kactl.tmp kactl.toc kactl.pdf kactl.ptc
+	cd build && rm -f hactl.aux hactl.log hactl.tmp hactl.toc hactl.pdf hactl.ptc
 
 veryclean: clean
 	rm -f hactl.pdf test-session.pdf
@@ -45,7 +45,7 @@ test-session.pdf: content/test-session/test-session.tex content/test-session/cha
 	cp build/test-session.pdf test-session.pdf
 
 showexcluded: build
-	grep -RoPh '^\s*\\kactlimport{\K.*' content/ | sed 's/.$$//' > build/headers_included
+	grep -RoPh '^\s*\\hactlimport{\K.*' content/ | sed 's/.$$//' > build/headers_included
 	find ./content -name "*.h" -o -name "*.py" -o -name "*.java" | grep -vFf build/headers_included
 
-.PHONY: help fast kactl clean veryclean build test test-compiles showexcluded
+.PHONY: help fast hactl clean veryclean build test test-compiles showexcluded

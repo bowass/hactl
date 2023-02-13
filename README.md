@@ -1,6 +1,6 @@
 # HACTL
 
-This repo hosts HACTL, [University of Haifa](https://en.wikipedia.org/wiki/KTH_Royal_Institute_of_Technology)'s ICPC team reference document.
+This repo hosts HACTL, [University of Haifa](https://www.haifa.ac.il/?lang=en)'s ICPC team reference document.
 It consists of 25 pages of copy-pasteable C++ code, for use in ICPC-style programming competitions.
 
 See [hactl.pdf](./hactl.pdf) for the final, browsable version, and [content/](./content/) for raw source code.

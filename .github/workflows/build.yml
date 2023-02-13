@@ -1,0 +1,29 @@
+name: test & build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    steps:
+      - name: run compiles
+        run: make test-compiles
+      - name: run stress tests
+        run: make test
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: install pdflatex
+        run: sudo apt-get install texlive-latex-base texlive-latex-recommended texlive-latex-extra
+      - name: build pdf
+        run: make hactl
+      - name: commit changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: 🔨✨⚒️💫
+          file_pattern: "*.pdf"

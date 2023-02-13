@@ -28,6 +28,6 @@ int bsrightmost(vi& a, int x) {
         else l = m + 1;
     }
     // remove to return ((num of elements < x) - 1):
-    if (a[l] != x) return -1; 
+    if (a[l] != x) return -1;
     return r - 1;
 }

@@ -24,4 +24,4 @@ public:
 	}
 };
 
-KACTL_AUTOREGISTER_TEST(test_sphericalDistance);
+HACTL_AUTOREGISTER_TEST(test_sphericalDistance);

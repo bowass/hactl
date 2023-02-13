@@ -1,5 +1,5 @@
 /**
- * Author: Ulf Lundstrom with inspiration from tinyKACTL
+ * Author: Ulf Lundstrom with inspiration from tinyHACTL
  * Date: 2009-04-14
  * License: CC0
  * Source:

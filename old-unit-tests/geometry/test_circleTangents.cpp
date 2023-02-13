@@ -30,4 +30,4 @@ public:
 	}
 };
 
-KACTL_AUTOREGISTER_TEST(test_circleTangents);
+HACTL_AUTOREGISTER_TEST(test_circleTangents);

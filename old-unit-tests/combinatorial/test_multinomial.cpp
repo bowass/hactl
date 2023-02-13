@@ -31,4 +31,4 @@ class test_multinomial :
 		}
 };
 
-KACTL_AUTOREGISTER_TEST(test_multinomial);
+HACTL_AUTOREGISTER_TEST(test_multinomial);

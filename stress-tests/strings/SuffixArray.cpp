@@ -150,7 +150,7 @@ struct SuffixArray {
 		return res;
 	}
 };
-} // namespace kactl
+} // namespace hactl
 
 struct timeit {
 	decltype(chrono::high_resolution_clock::now()) begin;
@@ -178,12 +178,12 @@ signed compare() {
 		// cout << S << endl;
 		vector<array<int, 2>> res;
 		{
-			timeit x("kactl");
-			old::SuffixArray kactl(S);
-			// cout << kactl.a[100] << endl;
-			auto lcp = kactl.lcp();
+			timeit x("hactl");
+			old::SuffixArray hactl(S);
+			// cout << hactl.a[100] << endl;
+			auto lcp = hactl.lcp();
 			rep(i,0,sz(S)+1)
-				res.push_back({kactl.a[i], lcp[i]});
+				res.push_back({hactl.a[i], lcp[i]});
 		}
 		{
 			timeit x("MIT");

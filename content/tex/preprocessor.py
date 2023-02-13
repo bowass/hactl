@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 # encoding: utf-8
 
-# Source code preprocessor for KACTL build process.
+# Source code preprocessor for HACTL build process.
 # License: CC0
 
-import sys
 import getopt
 import subprocess
+import sys
 
 
 def escape(input):
@@ -48,7 +48,7 @@ def ordoescape(input, esc=True):
 
 def addref(caption, outstream):
     caption = pathescape(caption).strip()
-    print(r"\kactlref{%s}" % caption, file=outstream)
+    print(r"\hactlref{%s}" % caption, file=outstream)
     with open('header.tmp', 'a') as f:
         f.write(caption + "\n")
 
@@ -156,9 +156,9 @@ def processwithcomments(caption, instream, outstream, listingslang):
     # Produce output
     out = []
     if warning:
-        out.append(r"\kactlwarning{%s: %s}" % (caption, warning))
+        out.append(r"\hactlwarning{%s: %s}" % (caption, warning))
     if error:
-        out.append(r"\kactlerror{%s: %s}" % (caption, error))
+        out.append(r"\hactlerror{%s: %s}" % (caption, error))
     else:
         addref(caption, outstream)
         if commands.get("Description"):
@@ -190,7 +190,7 @@ def processraw(caption, instream, outstream, listingslang = 'raw'):
         print(source, file=outstream)
         print(r"\end{lstlisting}", file=outstream)
     except:
-        print("\kactlerror{Could not read source.}", file=outstream)
+        print("\hactlerror{Could not read source.}", file=outstream)
 
 def parse_include(line):
     line = line.strip()

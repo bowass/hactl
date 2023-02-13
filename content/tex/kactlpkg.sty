@@ -1,6 +1,6 @@
-% This file contains LaTeX macros for KACTL
+% This file contains LaTeX macros for HACTL
 % License: CC0
-\ProvidesPackage{kactlpkg}
+\ProvidesPackage{hactlpkg}
 
 \usepackage[utf8]{inputenc}             % Encoding UTF-8
 \usepackage{listings}                   % Source code listings
@@ -48,7 +48,7 @@
 }
 
 % Some default config
-\subtitle{{\tiny new}KACTL}
+\subtitle{{\tiny new}HACTL}
 \title{KTH Algorithm Competition Template Library}
 \newcommand{\PDFColor}{0}
 \def\@builddir{build}
@@ -65,7 +65,7 @@
 
 % Remove temp files from old failed runs
 \AtBeginDocument{\immediate\write18{rm -f \@builddir/header.tmp}}
-\AtEndDocument{\immediate\write18{rm -f \@builddir/header.tmp}\immediate\write18{rm -f \@builddir/header2.tmp}\immediate\write18{rm -f \@builddir/kactl.tmp}}
+\AtEndDocument{\immediate\write18{rm -f \@builddir/header.tmp}\immediate\write18{rm -f \@builddir/header2.tmp}\immediate\write18{rm -f \@builddir/hactl.tmp}}
 
 % Include a list of source files at the top of every page. For the purpose
 % of recording those, we use eTeX marks. (We can't just append data directly to
@@ -236,7 +236,7 @@
 	\pagestyle{fancy}
 }
 
-\newcommand{\kactlref}[1]{
+\newcommand{\hactlref}[1]{
 	\ifthenelse{\boolean{appendixmode}}{}{
 		\ifnum \value{section} > 0
 			\addcontentsline{ptc}{subsection}{\texttt{#1}\hspace{0.2em}}
@@ -258,7 +258,7 @@
   \endgroup
 }
 
-\newcommand{\kactlimport}[2][]{ % Using empty default parameter
+\newcommand{\hactlimport}[2][]{ % Using empty default parameter
 	\leftcaption{}\rightcaption{}
 	\setboolean{hasdescription}{false}
 	\setboolean{hasusage}{false}
@@ -268,33 +268,33 @@
 	\myneedspace{3\baselineskip}
 	\penalty-100
 	{\large #2}
-	\immediate\write18{rm -f \@builddir/kactl.tmp} % Don't include old kactl.tmp on failure.
-	\immediate\write18{python3 content/tex/preprocessor.py -i "\@kactldir/#2" -o \@builddir/kactl.tmp #1}
-	\immediate\input{\@builddir/kactl.tmp}
+	\immediate\write18{rm -f \@builddir/hactl.tmp} % Don't include old hactl.tmp on failure.
+	\immediate\write18{python3 content/tex/preprocessor.py -i "\@hactldir/#2" -o \@builddir/hactl.tmp #1}
+	\immediate\input{\@builddir/hactl.tmp}
 }
 
 \newcommand{\import}[1]{
-	\input{"\@kactldir/#1"}
+	\input{"\@hactldir/#1"}
 }
 
-\newcommand{\kactlcontentdir}[1]{
-	\def\@kactlbasedir{#1}
-	\def\@kactldir{#1}
+\newcommand{\hactlcontentdir}[1]{
+	\def\@hactlbasedir{#1}
+	\def\@hactldir{#1}
 }
-\kactlcontentdir{.}
+\hactlcontentdir{.}
 
-\newcommand{\kactlchapter}[1]{
-	\def\@kactldir{\@kactlbasedir/#1}
-	\input{"\@kactldir/chapter.tex"}
-	\def\@kactldir{\@kactlbasedir}
-}
-
-\newcommand{\kactlerror}[1]{
-	\PackageError{kactlpkg}{#1}{}
+\newcommand{\hactlchapter}[1]{
+	\def\@hactldir{\@hactlbasedir/#1}
+	\input{"\@hactldir/chapter.tex"}
+	\def\@hactldir{\@hactlbasedir}
 }
 
-\newcommand{\kactlwarning}[1]{
-	\PackageWarning{kactlpkg}{#1}
+\newcommand{\hactlerror}[1]{
+	\PackageError{hactlpkg}{#1}{}
+}
+
+\newcommand{\hactlwarning}[1]{
+	\PackageWarning{hactlpkg}{#1}
 }
 
 \newboolean{hasleftcaption}

@@ -49,4 +49,4 @@ public:
 	}
 };
 
-KACTL_AUTOREGISTER_TEST(test_polygonCenter);
+HACTL_AUTOREGISTER_TEST(test_polygonCenter);

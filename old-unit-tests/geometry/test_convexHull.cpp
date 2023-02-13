@@ -82,4 +82,4 @@ public:
 	}
 };
 
-KACTL_AUTOREGISTER_TEST(test_convexHull);
+HACTL_AUTOREGISTER_TEST(test_convexHull);

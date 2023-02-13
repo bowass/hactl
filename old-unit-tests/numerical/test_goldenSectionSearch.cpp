@@ -49,4 +49,4 @@ public:
 	}
 };
 
-KACTL_AUTOREGISTER_TEST(test_goldenSectionSearch);
+HACTL_AUTOREGISTER_TEST(test_goldenSectionSearch);

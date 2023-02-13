@@ -44,4 +44,4 @@ public:
 	}
 };
 
-KACTL_AUTOREGISTER_TEST(test_union_find);
+HACTL_AUTOREGISTER_TEST(test_union_find);

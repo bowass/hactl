@@ -1,7 +1,7 @@
 /**
  * Author: Unknown, Johan Sannemo
  * Date: 2009-04-17
- * Source: tinyKACTL
+ * Source: tinyHACTL
  * Description: Old min-cost max-flow. Slow, but probably supports negative costs and double edges. Returns (flow, cost).
  * Status: Tested
  */

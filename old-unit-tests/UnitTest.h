@@ -87,9 +87,9 @@ protected:
 	string m_name;
 };
 
-#define KACTL_AUTOREGISTER_TEST(x) UnitTestWrapper* g__KACTL__temp__##x = new UnitTestWrapper(new x())
+#define HACTL_AUTOREGISTER_TEST(x) UnitTestWrapper* g__HACTL__temp__##x = new UnitTestWrapper(new x())
 #include "UnitTestWrapper.h"
 
-#ifndef KACTL_UNITTEST_BATCH
+#ifndef HACTL_UNITTEST_BATCH
 #	include "UnitTestManager.cpp"
 #endif

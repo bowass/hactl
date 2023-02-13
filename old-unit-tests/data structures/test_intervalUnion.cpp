@@ -51,4 +51,4 @@ public:
 	}
 };
 
-KACTL_AUTOREGISTER_TEST(test_intervalUnion);
+HACTL_AUTOREGISTER_TEST(test_intervalUnion);

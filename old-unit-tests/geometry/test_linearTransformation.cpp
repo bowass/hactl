@@ -22,4 +22,4 @@ public:
 	}
 };
 
-KACTL_AUTOREGISTER_TEST(test_linearTransformation);
+HACTL_AUTOREGISTER_TEST(test_linearTransformation);

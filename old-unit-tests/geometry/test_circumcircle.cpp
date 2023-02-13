@@ -45,4 +45,4 @@ public:
 	}
 };
 
-KACTL_AUTOREGISTER_TEST(test_circumcircle);
+HACTL_AUTOREGISTER_TEST(test_circumcircle);

@@ -41,4 +41,4 @@ public:
 	}
 };
 
-KACTL_AUTOREGISTER_TEST(test_binarySearch);
+HACTL_AUTOREGISTER_TEST(test_binarySearch);

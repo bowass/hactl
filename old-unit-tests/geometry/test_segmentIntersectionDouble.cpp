@@ -105,4 +105,4 @@ public:
 	}
 };
 
-KACTL_AUTOREGISTER_TEST(test_segmentIntersectionDouble);
+HACTL_AUTOREGISTER_TEST(test_segmentIntersectionDouble);

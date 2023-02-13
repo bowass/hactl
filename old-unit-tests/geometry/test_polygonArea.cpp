@@ -32,4 +32,4 @@ public:
 	}
 };
 
-KACTL_AUTOREGISTER_TEST(test_polygonArea);
+HACTL_AUTOREGISTER_TEST(test_polygonArea);

@@ -57,4 +57,4 @@ public:
 	}
 };
 
-KACTL_AUTOREGISTER_TEST(test_segDistDouble);
+HACTL_AUTOREGISTER_TEST(test_segDistDouble);

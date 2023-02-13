@@ -40,4 +40,4 @@ class test_DFSMatching :
 		}
 };
 
-KACTL_AUTOREGISTER_TEST(test_DFSMatching);
+HACTL_AUTOREGISTER_TEST(test_DFSMatching);

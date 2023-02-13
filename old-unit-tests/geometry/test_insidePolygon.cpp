@@ -76,4 +76,4 @@ public:
 	}
 };
 
-KACTL_AUTOREGISTER_TEST(test_insidePolygon);
+HACTL_AUTOREGISTER_TEST(test_insidePolygon);

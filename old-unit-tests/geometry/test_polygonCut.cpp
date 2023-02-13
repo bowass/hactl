@@ -68,4 +68,4 @@ public:
 	}
 };
 
-KACTL_AUTOREGISTER_TEST(test_polygonCut);
+HACTL_AUTOREGISTER_TEST(test_polygonCut);

@@ -26,4 +26,4 @@ public:
 	}
 };
 
-KACTL_AUTOREGISTER_TEST(test_sideOf);
+HACTL_AUTOREGISTER_TEST(test_sideOf);

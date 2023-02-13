@@ -41,4 +41,4 @@ class test_HopcorftKarp :
 		}
 };
 
-KACTL_AUTOREGISTER_TEST(test_HopcorftKarp);
+HACTL_AUTOREGISTER_TEST(test_HopcorftKarp);

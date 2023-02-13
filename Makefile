@@ -31,8 +31,6 @@ clean:
 veryclean: clean
 	rm -f hactl.pdf test-session.pdf
 
-.PHONY: help fast kactl clean veryclean
-
 build:
 	mkdir -p build/
 
@@ -49,3 +47,5 @@ test-session.pdf: content/test-session/test-session.tex content/test-session/cha
 showexcluded: build
 	grep -RoPh '^\s*\\kactlimport{\K.*' content/ | sed 's/.$$//' > build/headers_included
 	find ./content -name "*.h" -o -name "*.py" -o -name "*.java" | grep -vFf build/headers_included
+
+.PHONY: help fast kactl clean veryclean build test test-compiles showexcluded

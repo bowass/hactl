@@ -8,13 +8,13 @@
  *  are at least two distinct paths between any two nodes. Note that a node can
  *  be in several components. An edge which is not in a component is a bridge,
  *  i.e., not part of any cycle.
+ * One way of using the block-cut tree is to build a bipartite graph of comps,vertices. Edges are the bridges, and also an edge from each vertex to each component it belongs to.
  * Usage:
  *  int eid = 0; ed.resize(N);
  *  for each edge (a,b) {
  *    ed[a].emplace_back(b, eid);
  *    ed[b].emplace_back(a, eid++); }
  *  bicomps([\&](const vi\& edgelist) {...});
- * One way of using the block-cut tree is to build a bipartite graph of comps,vertices. Edges are the bridges, and also an edge from each vertex to each component it belongs to.
  * Time: O(E + V)
  * Status: tested during MIPT ICPC Workshop 2017
  */

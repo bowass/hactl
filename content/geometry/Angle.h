@@ -5,7 +5,7 @@
  * Source: Simon Lindholm
  * Description: A class for ordering angles (as represented by int points and
  *  a number of rotations around the origin). Useful for rotational sweeping.
- *  When ordering a collection of angles, first in order is $(\inf, 0)$, going
+ *  When ordering a collection of angles, first in order is $(\infty, 0)$, going
  *  ccw.
  * Usage:
  *  vector<Angle> v = {w[0], w[0].t360() ...}; // sorted

@@ -12,7 +12,7 @@ void test(int N, int mxCost, int iters) {
         if (n > m)
             swap(n, m);
 
-        MCMF mcmf(n + m + 2);
+        MinCostMaxFlow mcmf(n + m + 2);
         int s = 0;
         int t = 1;
         for (int i = 0; i < n; i++)
@@ -28,7 +28,7 @@ void test(int N, int mxCost, int iters) {
             }
         }
         mcmf.setpi(s);
-        auto maxflow = mcmf.maxflow(s, t);
+        auto maxflow = mcmf.mcmf(s, t);
         auto matching = hungarian(cost);
         assert(maxflow.first == n);
         assert(maxflow.second == matching.first);

@@ -1,93 +1,90 @@
 /**
- * Author: Stanford
- * Date: Unknown
- * Source: Stanford Notebook
- * Description: Min-cost max-flow. cap[i][j] != cap[j][i] is allowed; double edges are not.
- *  If costs can be negative, call setpi before maxflow, but note that negative cost cycles are not supported.
- *  To obtain the actual flow, look at positive values only.
- * Status: Tested on kattis:mincostmaxflow, stress-tested against another implementation
- * Time: Approximately O(E^2)
+ * Author: Alon Krymgand
+ * Date: 2023-10-02
+ * Source: Haifa's Algorithm Competition Template Library
+ * Description: Min-cost max-flow. Duplicated edges allowed. If costs can be
+ * negative, call setpi before mcmf (negative cycles not supported).
+ * To obtain the actual flow, look at positive values only.
+ * Status: Tested.
+ * implementation Time: O(MaxF*mlogn), and O(mn+Maxf*mlogn) if contains negative
+ * edges. Check max limits before submitting!
  */
 #pragma once
 
-// #include <bits/extc++.h> /// include-line, keep-include
+const ll inf = 1e18 + 5;
 
-const ll INF = numeric_limits<ll>::max() / 4;
-typedef vector<ll> VL;
+struct MinCostMaxFlow {
+  struct edge {
+    int to, rev;
+    ll cap, cost;
+  };
+  int n;
+  vector<vector<edge>> g;
+  vi par, edgeIdx;
+  vector<ll> pi;
+  MinCostMaxFlow(int n) : n(n), g(n), par(n), edgeIdx(n), pi(n) {}
 
-struct MCMF {
-	int N;
-	vector<vi> ed, red;
-	vector<VL> cap, flow, cost;
-	vi seen;
-	VL dist, pi;
-	vector<pii> par;
+  bool augment(int s, int t) {
+    // Augment using Dijkstra in O(mlogn).
+    vector<ll> dist(n, inf);
+    vector<bool> inQ(n);
+    queue<int> q;
+    q.push(s), inQ[s] = true, dist[s] = 0;
+    while (!q.empty()) {
+      int u = q.front();
+      q.pop(), inQ[u] = 0;
+      rep(i, 0, sz(g[u])) {
+        auto e = g[u][i];
+        ll dto = dist[u] - pi[e.to] + pi[u] + e.cost;
+        if (e.cap > 0 && dto < dist[e.to]) {
+          dist[e.to] = dto;
+          par[e.to] = u;
+          edgeIdx[e.to] = i;
+          if (!inQ[e.to])
+            q.push(e.to), inQ[e.to] = true;
+        }
+      }
+    }
+    return dist[t] != inf;
+  }
 
-	MCMF(int N) :
-		N(N), ed(N), red(N), cap(N, VL(N)), flow(cap), cost(cap),
-		seen(N), dist(N), pi(N), par(N) {}
+  pair<ll, ll> mcmf(int s, int t) {
+    ll maxf = 0, minc = 0;
+    while (augment(s, t)) {
+      ll minf = inf, costsum = 0;
+      for (int p = t; p != s; p = par[p]) {
+        auto &e = g[par[p]][edgeIdx[p]];
+        minf = min(minf, e.cap);
+        costsum += e.cost;
+      }
+      for (int p = t; p != s; p = par[p]) {
+        auto &e = g[par[p]][edgeIdx[p]];
+        e.cap -= minf;
+        g[e.to][e.rev].cap += minf;
+      }
+      maxf += minf, minc += costsum * minf;
+    }
+    return {maxf, minc};
+  }
 
-	void addEdge(int from, int to, ll cap, ll cost) {
-		this->cap[from][to] = cap;
-		this->cost[from][to] = cost;
-		ed[from].push_back(to);
-		red[to].push_back(from);
-	}
+  void addEdge(int from, int to, ll cap, ll cost) {
+    g[from].push_back({to, sz(g[to]), cap, cost});
+    g[to].push_back({from, sz(g[from]) - 1, 0, -cost});
+  }
 
-	void path(int s) {
-		fill(all(seen), 0);
-		fill(all(dist), INF);
-		dist[s] = 0; ll di;
+  bool setpi(int s) {
+    // call before mcmf, if there are negative costs.
+    // Uses Bellman-Ford to compute pi of vertices in O(nm).
 
-		__gnu_pbds::priority_queue<pair<ll, int>> q;
-		vector<decltype(q)::point_iterator> its(N);
-		q.push({0, s});
-
-		auto relax = [&](int i, ll cap, ll cost, int dir) {
-			ll val = di - pi[i] + cost;
-			if (cap && val < dist[i]) {
-				dist[i] = val;
-				par[i] = {s, dir};
-				if (its[i] == q.end()) its[i] = q.push({-dist[i], i});
-				else q.modify(its[i], {-dist[i], i});
-			}
-		};
-
-		while (!q.empty()) {
-			s = q.top().second; q.pop();
-			seen[s] = 1; di = dist[s] + pi[s];
-			for (int i : ed[s]) if (!seen[i])
-				relax(i, cap[s][i] - flow[s][i], cost[s][i], 1);
-			for (int i : red[s]) if (!seen[i])
-				relax(i, flow[i][s], -cost[i][s], 0);
-		}
-		rep(i,0,N) pi[i] = min(pi[i] + dist[i], INF);
-	}
-
-	pair<ll, ll> maxflow(int s, int t) {
-		ll totflow = 0, totcost = 0;
-		while (path(s), seen[t]) {
-			ll fl = INF;
-			for (int p,r,x = t; tie(p,r) = par[x], x != s; x = p)
-				fl = min(fl, r ? cap[p][x] - flow[p][x] : flow[x][p]);
-			totflow += fl;
-			for (int p,r,x = t; tie(p,r) = par[x], x != s; x = p)
-				if (r) flow[p][x] += fl;
-				else flow[x][p] -= fl;
-		}
-		rep(i,0,N) rep(j,0,N) totcost += cost[i][j] * flow[i][j];
-		return {totflow, totcost};
-	}
-
-	// If some costs can be negative, call this before maxflow:
-	void setpi(int s) { // (otherwise, leave this out)
-		fill(all(pi), INF); pi[s] = 0;
-		int it = N, ch = 1; ll v;
-		while (ch-- && it--)
-			rep(i,0,N) if (pi[i] != INF)
-				for (int to : ed[i]) if (cap[i][to])
-					if ((v = pi[i] + cost[i][to]) < pi[to])
-						pi[to] = v, ch = 1;
-		assert(it >= 0); // negative cost cycle
-	}
+    pi.assign(n, inf), pi[s] = 0;
+    int it = n, ch = 1;
+    ll v;
+    while (ch-- && it--) {
+      rep(u, 0, n) for (auto &e : g[u]) {
+        if (e.cap != 0 && (v = pi[u] + e.cost) < pi[e.to])
+          ch = 1, pi[e.to] = v;
+      }
+    }
+    return it >= 0; // true if NO negative cycles found
+  }
 };

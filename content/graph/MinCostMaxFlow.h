@@ -6,8 +6,8 @@
  * negative, call setpi before mcmf (negative cycles not supported).
  * To obtain the actual flow, look at positive values only.
  * Status: Tested.
- * implementation Time: O(MaxF*mlogn), and O(mn+Maxf*mlogn) if contains negative
- * edges. Check max limits before submitting!
+ * Time: O(MaxF*mlogn), and O(mn+Maxf*mlogn) if contains negative edges.
+ * Check max limits before submitting!
  */
 #pragma once
 

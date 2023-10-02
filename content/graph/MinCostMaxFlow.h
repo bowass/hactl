@@ -4,7 +4,7 @@
  * Source: Haifa's Algorithm Competition Template Library
  * Description: Min-cost max-flow. Duplicated edges allowed, negative cycles not
  * supported. To obtain the actual flow, look at positive values only.
- * $O(F * E \log V)$, and $O(VE + F * E \log V) if contains negative edges.
+ * $O(F * E \log V)$, and $O(VE + F * E \log V)$ if contains negative edges.
  * Status: Tested.
  * Time: O(MaxF*mlogn), and O(mn+Maxf*mlogn) if contains negative edges.
  * Check max limits before submitting!
